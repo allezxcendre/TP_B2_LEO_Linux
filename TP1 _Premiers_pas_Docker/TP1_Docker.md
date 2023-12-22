@@ -1,22 +1,5 @@
 # I. Init
 
-- [I. Init](#i-init)
-  - [1. Installation de Docker](#1-installation-de-docker)
-  - [2. Vérifier que Docker est bien là](#2-vérifier-que-docker-est-bien-là)
-  - [3. sudo c pa bo](#3-sudo-c-pa-bo)
-  - [4. Un premier conteneur en vif](#4-un-premier-conteneur-en-vif)
-  - [5. Un deuxième conteneur en vif](#5-un-deuxième-conteneur-en-vif)
-
-## 1. Installation de Docker
-
-Pour installer Docker, il faut **toujours** (comme d'hab en fait) se référer à la doc officielle.
-
-**Je vous laisse donc suivre les instructions de la doc officielle pour installer Docker dans la VM.**
-
-> ***Il n'y a pas d'instructions spécifiques pour Rocky dans la doc officielle**, mais rocky est très proche de CentOS. Vous pouvez donc suivre les instructions pour CentOS 9.*
-
-## 2. Vérifier que Docker est bien là
-
 ```bash
 # est-ce que le service Docker existe ?
 systemctl status docker
@@ -31,11 +14,7 @@ sudo docker ps
 
 ## 3. sudo c pa bo
 
-On va faire en sorte que vous puissiez taper des commandes `docker` sans avoir besoin des droits `root`, et donc de `sudo`.
 
-Pour ça il suffit d'ajouter votre utilisateur au groupe `docker`.
-
-> ***Pour que le changement de groupe prenne effet, il faut vous déconnecter/reconnecter de la session SSH** (pas besoin de reboot la machine, pitié).*
 
 🌞 **Ajouter votre utilisateur au groupe `docker`**
 
@@ -48,13 +27,6 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 
 ## 4. Un premier conteneur en vif
 
-> *Je rappelle qu'un "conteneur" c'est juste un mot fashion pour dire qu'on lance un processus un peu isolé sur la machine.*
-
-Bon trève de blabla, on va lancer un truc qui juste marche.
-
-On va lancer un conteneur NGINX qui juste fonctionne, puis custom un peu sa conf. Ce serait par exemple pour tester une conf NGINX, ou faire tourner un serveur NGINX de production.
-
-> *Hé les dévs, **jouez le jeu bordel**. NGINX c'est pas votre pote OK, mais on s'en fout, c'est une app comme toutes les autres, comme ta chatroom ou ta calculette. Ou Netflix ou LoL ou Spotify ou un malware. NGINX il est réputé et standard, c'est juste un outil d'étude pour nous là. Faut bien que je vous fasse lancer un truc. C'est du HTTP, c'est full standard, vous le connaissez, et c'est facile à tester/consommer : avec un navigateur.*
 
 🌞 **Lancer un conteneur NGINX**
 ```
@@ -137,18 +109,6 @@ LISTEN   0         4096                  [::]:9999               [::]:*       us
 
 ```
 
-➜ On peut préciser genre mille options au lancement d'un conteneur, **go `docker run --help` pour voir !**
-
-➜ Hop, on en profite pour voir un truc super utile avec Docker : le **partage de fichiers au moment où on `docker run`**
-
-- en effet, il est possible de partager un fichier ou un dossier avec un conteneur, au moment où on le lance
-- avec NGINX par exemple, c'est idéal pour déposer un fichier de conf différent à chaque conteneur NGINX qu'on lance
-  - en plus NGINX inclut par défaut tous les fichiers dans `/etc/nginx/conf.d/*.conf`
-  - donc suffit juste de drop un fichier là-bas
-- ça se fait avec `-v` pour *volume* (on appelle ça "monter un volume")
-
-> *C'est aussi idéal pour créer un conteneur qui setup un environnement de dév par exemple. On prépare une image qui contient Python + les libs Python qu'on a besoin, et au moment du `docker run` on partage notre code. Ainsi, on peut dév sur notre PC, et le code s'exécute dans le conteneur. On verra ça plus tard les dévs !*
-
 🌞 **On va ajouter un site Web au conteneur NGINX**
 
 ```
@@ -212,10 +172,6 @@ NameError: name 'ls' is not defined
 
 # II. Images
 
-- [II. Images](#ii-images)
-  - [1. Images publiques](#1-images-publiques)
-  - [2. Construire une image](#2-construire-une-image)
-
 ## 1. Images publiques
 
 🌞 **Récupérez des images**
@@ -250,11 +206,6 @@ Python 3.12.1
 ```
 
 ## 2. Construire une image
-
-Pour construire une image il faut :
-
-- créer un fichier `Dockerfile`
-- exécuter une commande `docker build` pour produire une image à partir du `Dockerfile`
 
 🌞 **Ecrire un Dockerfile pour une image qui héberge une application Python**
 
@@ -312,10 +263,12 @@ Cet exemple d'application est vraiment naze 👎
 Pour la fin de ce TP on va manipuler un peu `docker compose`.
 
 🌞 **Créez un fichier `docker-compose.yml`**
+```
 
 [alexandre@Docker ~]$ mkdir compose_test
 [alexandre@Docker compose_test]$ sudo nano docker-compose.yml
 [alexandre@Docker compose_test]$ cat docker-compose.yml
+```
 ```
 version: "3"
 
