@@ -1,0 +1,27 @@
+version: "3.1"
+services:
+  php-apache:
+    image: php:7.2-apache
+    ports:
+      - "80:80"
+    volumes:
+      - "/src/php.php:/var/www/html/"
+
+  sql:
+    image: mysql
+    ports:
+      - "4040:4040"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=alexandre
+      - MYSQL_PASSWORD=alexandre
+      - MYSQL_DATABASE=data-base
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 4040
