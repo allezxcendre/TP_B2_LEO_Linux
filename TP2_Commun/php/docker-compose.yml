@@ -6,6 +6,8 @@ services:
       - "80:80"
     volumes:
       - "/src/index.html:/var/www/html/"
+    mem_limit: 1g
+    cpus: 1
 
   sql:
     image: mysql
@@ -16,7 +18,9 @@ services:
       - MYSQL_DATABASE=data-base
     volumes:
       - "./base.sql:/docker-entrypoint-initdb.d/init.sql"
-      
+    mem_limit: 1g
+    cpus: 1
+
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -25,3 +29,5 @@ services:
     environment:
       PMA_HOST: sql
       PMA_PORT: 3306
+    mem_limit: 1g
+    cpus: 1
