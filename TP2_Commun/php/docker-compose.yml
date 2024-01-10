@@ -5,23 +5,23 @@ services:
     ports:
       - "80:80"
     volumes:
-      - "/src/php.php:/var/www/html/"
+      - "/src/index.html:/var/www/html/"
 
   sql:
     image: mysql
-    ports:
-      - "4040:4040"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=alexandre
       - MYSQL_PASSWORD=alexandre
       - MYSQL_DATABASE=data-base
-
+    volumes:
+      - "./base.sql:/docker-entrypoint-initdb.d/init.sql"
+      
   phpmyadmin:
     image: phpmyadmin
     restart: always
     ports:
       - "8080:80"
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 4040
+      PMA_HOST: sql
+      PMA_PORT: 3306
