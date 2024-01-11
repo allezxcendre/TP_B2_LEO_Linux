@@ -31,3 +31,12 @@ services:
       PMA_PORT: 3306
     mem_limit: 1g
     cpus: 1
+
+  nginx:
+    image: nginx
+
+
+
+networks:
+  mon-networks: 
+    driver: bridge

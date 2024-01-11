@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  nodes = [
+    { name: "alice.tp3.b2", ip: "10.3.1.11", ui: true, ram: "1014" },
+    { name: "bob.tp3.b2", ip: "10.3.1.200", ui: true, ram: "2048" },
+    { name: "eve.tp3.b2", ip: "10.3.1.57", ui: false, ram: "1024" }
+  ]
+
+  nodes.each do |node_config|
+    config.vm.define node_config[:name] do |node|
+      node.vm.box = "super_box"
+      node.vm.box_check_update = false
+
+      if node_config[:ui]
+        node.vm.provider "virtualbox" do |vb|
+          vb.gui = true
+        end
+      else
+        node.vm.provider "virtualbox" do |vb|
+          vb.gui = false
+        end
+      end
+
+      node.vm.network "private_network", type: "static", ip: node_config[:ip]
+
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = node_config[:ram]
+      end
+    end
+  end
+end
